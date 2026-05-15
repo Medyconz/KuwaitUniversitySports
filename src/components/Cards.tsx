@@ -3,6 +3,9 @@ import Link from 'next/link';
 import { formatDate, makeIcsHref, text, type AnnouncementItem, type CoordinatorItem, type EventItem, type FacilityItem, type FileItem, type MediaItem } from '@/lib/content';
 import { t, type Locale } from '@/i18n';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const logoSrc = `${basePath}/images/ku-sports-logo.svg`;
+
 function statusClass(status: string) {
   if (['open', 'available'].includes(status)) return 'bg-emerald-50 text-emerald-800 border-emerald-200';
   if (['closed', 'suspended', 'not-available'].includes(status)) return 'bg-red-50 text-red-800 border-red-200';
@@ -37,7 +40,7 @@ export function EventCard({ event, locale }: { event: EventItem; locale: Locale 
 export function FacilityCard({ facility, locale }: { facility: FacilityItem; locale: Locale }) {
   return (
     <article className="surface overflow-hidden">
-      <img src={facility.image} alt={text(facility.name, locale)} className="h-44 w-full object-cover" />
+      <div className="grid h-44 place-items-center bg-white p-5"><img src={logoSrc} alt={text(facility.name, locale)} className="h-full max-h-36 w-full object-contain" /></div>
       <div className="grid gap-4 p-5">
         <span className={`badge w-fit ${statusClass(facility.status)}`}>{text(facility.statusLabel, locale)}</span>
         <div><h3 className="text-xl font-bold text-ku-blue">{text(facility.name, locale)}</h3><p className="mt-2 text-sm leading-6 text-ku-ink/72">{text(facility.notice, locale)}</p></div>
@@ -87,7 +90,7 @@ export function CoordinatorCard({ item, locale }: { item: CoordinatorItem; local
 export function MediaCard({ item, locale }: { item: MediaItem; locale: Locale }) {
   return (
     <article className="surface overflow-hidden">
-      <img src={item.image} alt={text(item.title, locale)} className="h-44 w-full object-cover" />
+      <div className="grid h-44 place-items-center bg-white p-5"><img src={logoSrc} alt={text(item.title, locale)} className="h-full max-h-36 w-full object-contain" /></div>
       <div className="grid gap-3 p-5"><span className="badge w-fit bg-ku-gold/10 text-ku-blue">{item.year}</span><h3 className="text-xl font-bold text-ku-blue">{text(item.title, locale)}</h3><p className="text-sm leading-6 text-ku-ink/72">{text(item.description, locale)}</p><Link className="font-bold text-ku-blue" href={item.url}>{t[locale].cta.details}</Link></div>
     </article>
   );
