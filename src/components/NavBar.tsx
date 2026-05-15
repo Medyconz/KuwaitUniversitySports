@@ -6,6 +6,9 @@ import { usePathname } from 'next/navigation';
 import { useState } from 'react';
 import { alternateLocale, localeMeta, localizedPath, navItems, t, type Locale } from '@/i18n';
 
+const basePath = process.env.NEXT_PUBLIC_BASE_PATH || '';
+const logoSrc = `${basePath}/images/ku-sports-logo.svg`;
+
 export function NavBar({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || `/${locale}/`;
@@ -17,7 +20,7 @@ export function NavBar({ locale }: { locale: Locale }) {
     <header className="sticky top-0 z-40 border-b border-ku-line/80 bg-[oklch(0.995_0.006_245_/_0.92)] backdrop-blur">
       <nav className="container-shell flex min-h-16 items-center justify-between gap-4 py-3" aria-label="Main navigation">
         <Link href={localizedPath(locale)} className="flex items-center gap-3 font-bold text-ku-blue">
-          <span className="grid h-10 w-10 place-items-center rounded-md bg-ku-blue text-sm text-white">KU</span>
+          <img src={logoSrc} alt="K.U Sports" className="h-12 w-12 rounded-md border border-ku-line bg-white object-contain p-1" />
           <span className="max-w-[14rem] leading-tight">{t[locale].brand}</span>
         </Link>
         <div className="hidden items-center gap-1 lg:flex">
@@ -28,9 +31,10 @@ export function NavBar({ locale }: { locale: Locale }) {
           ))}
         </div>
         <div className="flex items-center gap-2">
-          <Link href={otherHref} className="rounded-md border border-ku-line px-3 py-2 text-sm font-bold text-ku-blue" hrefLang={other} lang={other} dir={localeMeta[other].dir}>
-            {localeMeta[locale].other}
-          </Link>
+          <div className="grid grid-cols-2 rounded-md border border-ku-line bg-white p-1 text-sm font-bold" aria-label="Language switcher">
+            <Link href={localizedPath('en', section)} className={`rounded px-3 py-1.5 ${locale === 'en' ? 'bg-ku-blue text-white' : 'text-ku-blue'}`} hrefLang="en" lang="en" dir="ltr">EN</Link>
+            <Link href={localizedPath('ar', section)} className={`rounded px-3 py-1.5 ${locale === 'ar' ? 'bg-ku-blue text-white' : 'text-ku-blue'}`} hrefLang="ar" lang="ar" dir={localeMeta.ar.dir}>عربي</Link>
+          </div>
           <button className="rounded-md border border-ku-line p-2 lg:hidden" type="button" aria-label="Toggle menu" aria-expanded={open} onClick={() => setOpen((value) => !value)}>
             {open ? <X size={22} /> : <Menu size={22} />}
           </button>
