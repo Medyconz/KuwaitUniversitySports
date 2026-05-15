@@ -4,15 +4,13 @@ import { Menu, X } from 'lucide-react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
-import { alternateLocale, localeMeta, localizedPath, navItems, t, type Locale } from '@/i18n';
+import { localeMeta, localizedPath, navItems, t, type Locale } from '@/i18n';
 import { LogoMark } from '@/components/LogoMark';
 
 export function NavBar({ locale }: { locale: Locale }) {
   const [open, setOpen] = useState(false);
   const pathname = usePathname() || `/${locale}/`;
-  const other = alternateLocale(locale);
   const section = pathname.split('/').filter(Boolean)[1] || '';
-  const otherHref = localizedPath(other, section);
 
   return (
     <header className="sticky top-0 z-40 border-b border-ku-line/80 bg-[oklch(0.995_0.006_245_/_0.92)] backdrop-blur">
